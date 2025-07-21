@@ -1,0 +1,12 @@
+[project]
+name = "trabalho"
+version = "0.1.0"
+description = "Interpretador em Python com Lark"
+requires-python = ">=3.10"
+
+dependencies = [
+    "lark>=1.1.7"
+]
+
+[tool.uv]
+# Você pode adicionar configurações específicas aqui se quiser

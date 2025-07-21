@@ -1,95 +1,84 @@
-?start     : program
+?start         : program
 
-program    : declaration*
+program        : declaration*
 
-?declaration: var_def 
-            | function
-            | stmt
+?declaration   : var_def 
+               | function
+               | stmt
 
-var_def : TYPE VAR ("=" expr)? ";"
+var_def        : TYPE VAR ("=" expr)? ";"
 
-function   : TYPE VAR "(" fun_params ")" block
+function       : TYPE VAR "(" fun_params ")" block
 
-fun_params   : [TYPE VAR ( "," TYPE VAR )*]
+fun_params     : [TYPE VAR ( "," TYPE VAR )*]
 
-?stmt       : expr ";"
-            | return_stmt
-            | print_cmd
-            | if_cmd
-            | for_cmd
-            | while_cmd
-            | break_cmd             -> break_cmd
-            | block
+?stmt          : expr ";"
+               | return_stmt
+               | print_cmd
+               | if_cmd
+               | for_cmd
+               | while_cmd
+               | break_cmd         -> break_cmd
+               | block
 
-return_stmt : "return" expr? ";"      -> return_cmd
+return_stmt    : RETURN expr? ";"        -> return_cmd
+print_cmd      : PRINT "(" expr ")" ";"  -> print_cmd
+if_cmd         : IF "(" expr ")" stmt ["else" stmt]
+for_cmd        : FOR "(" for_args ")" stmt
+while_cmd      : WHILE "(" expr ")" stmt
+break_cmd      : BREAK ";"              -> break_cmd
 
-print_cmd   : "print" "(" expr ")" ";"
+for_args       : (var_def | expr? ";") expr? ";" expr?
 
-if_cmd      : "if" "(" expr ")" stmt ["else" stmt]
+block          : "{" declaration* "}"
 
-for_cmd     : "for" "(" for_args ")" stmt
+?expr          : unary
+               | expr "=" expr             -> assign
+               | expr "||" expr            -> or_
+               | expr "&&" expr            -> and_
+               | expr "==" expr            -> eq
+               | expr "!=" expr            -> ne
+               | expr "<" expr             -> lt
+               | expr ">" expr             -> gt
+               | expr "<=" expr            -> le
+               | expr ">=" expr            -> ge
+               | expr "+" expr             -> add
+               | expr "-" expr             -> sub
+               | expr "*" expr             -> mul
+               | expr "/" expr             -> div
 
-for_args    : ( var_def | expr? ";" ) expr? ";" expr?
+?unary         : MINUS unary              -> unary
+               | NOT unary                -> unary
+               | call
+               | atom
 
-while_cmd   : "while" "(" expr ")" stmt
+?call          : atom "(" params ")"      -> call
 
-block       : "{" declaration* "}"
+?atom          : NUMBER 
+               | BOOL
+               | VAR
+               | STRING
+               | VOID
+               | "(" expr ")"
 
-break_cmd   : "break" ";"
+params         : [ expr ("," expr)* ]
 
-?expr       : logic_or
-            | expr "=" expr             -> assign
+EQUAL          : "="
+MINUS          : "-"
+NOT            : "!"
+RETURN.2       : "return"
+IF.2           : "if"
+ELSE.2         : "else"
+FOR.2          : "for"
+WHILE.2        : "while"
+BREAK.2        : "break"
+PRINT.2        : "printf"
+BOOL.2         : "true" | "false"
+TYPE.3         : "int" | "char"
+VOID.3         : "void"
+VAR.1          : /[a-z_A-Z]\w*/
+NUMBER         : /([1-9][0-9]*|0)(\.[0-9]+)?/
+STRING         : /"[^"]*"/
+COMMENT        : "//" /[^\n]*/
 
-?logic_or   : logic_and
-            | logic_or "||" logic_and     -> or_
-
-?logic_and  : equality
-            | logic_and "&&" equality    -> and_
-
-?equality   : comparison
-            | comparison "==" comparison  -> eq
-            | comparison "!=" comparison  -> ne
-
-?comparison : sum
-            | sum ">" sum                 -> gt
-            | sum "<" sum                 -> lt
-            | sum ">=" sum                -> ge
-            | sum "<=" sum                -> le
-
-?sum        : term
-            | sum "+" term                -> add
-            | sum "-" term                -> sub
-
-?term       : unary
-            | term "*" unary              -> mul
-            | term "/" unary              -> div
-
-?unary      : MINUS unary                 -> unary
-            | NOT unary                   -> unary
-            | call
-            | atom
-
-?call       : atom "(" params ")"         -> call
-
-?atom       : NUMBER 
-            | BOOL
-            | VAR
-            | STRING
-            | VOID
-            | "(" expr ")"
-
-params      : [ expr ("," expr)* ]
-
-EQUAL       : "="
-MINUS       : "-"
-NOT         : "!"
-BOOL.2      : "true" | "false"
-DOT.2       : "."  
-VAR.1       : /[a-z_A-Z]\w*/
-TYPE.3      : "int" | "char"
-NUMBER      : /([1-9][0-9]*|0)(\.[0-9]+)?/ 
-STRING      : /"[^"]*"/
-VOID.3      : "void"
-COMMENT     : "//" /[^\n]*/
-
-%ignore /\s/ | COMMENT
+%ignore        /\s/ | COMMENT

@@ -51,19 +51,19 @@ class ASTTransformer(Transformer):
     def block(self, *declarations):
         return Block(stmts=list(declarations))
 
-    def print_cmd(self, expr):
+    def print_cmd(self, name,expr):
         return Print(expr=expr)
 
-    def if_cmd(self, cond, then_stmt, else_stmt=None):
+    def if_cmd(self,name, cond, then_stmt, else_stmt=None):
         return If(condition=cond, then_branch=then_stmt, else_branch=else_stmt or Block([]))
     
-    def break_cmd(self, items=None):
+    def break_cmd(self,name, items=None):
         return Break()
 
-    def while_cmd(self, cond, body):
+    def while_cmd(self, name, cond, body):
         return While(condition=cond, body=body)
 
-    def for_cmd(self, args, body):
+    def for_cmd(self, name,args, body):
         init, cond, incr = args
         return Block(stmts=[init, While(cond or Literal(True), body=Block([body, incr]))])
 
@@ -74,7 +74,7 @@ class ASTTransformer(Transformer):
     def opt_expr(self, expr=None):
         return expr or Literal(True)
 
-    def return_cmd(self, expr=None):
+    def return_cmd(self,name, expr=None):
         return Return(value=expr or Literal(None))
 
     def assign(self, var, value):

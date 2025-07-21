@@ -45,19 +45,38 @@ Este projeto desenvolve um **interpretador** para uma linguagem baseada em um su
 ## ⚙️ Instalação
 
 1. Clone o repositório:
+
 ```bash
 git clone https://github.com/fcte-compiladores/trabalho-final-trabalho__compilas.git
-cd seu-repositorio
+cd trabalho-final-trabalho__compilas
 ```
 
-2. (Opcional) Instale o gerenciador de pacotes uv, caso ainda não tenha:
+2. (Opcional) Instale o gerenciador de pacotes `uv`:
+
 ```bash
-uv pip install uv
+# Linux/macOS
+curl -Ls https://astral.sh/uv/install.sh | sh
+
+# Ou com pip
+pip install uv
 ```
 
-3. Instale as dependências:
+3. Crie e ative um ambiente virtual:
+
 ```bash
-uv pip install -r requirements.txt
+uv venv
+
+# Linux/macOS
+source .venv/bin/activate
+
+# Windows
+.venv\Scripts\activate
+```
+
+4. Instale as dependências do projeto:
+
+```bash
+uv pip install -e .
 ```
 
 ---
@@ -93,6 +112,23 @@ Etapas da compilação:
 - **Léxica/Sintática**: `Lark` com gramática definida
 - **AST**: transformação com `ASTTransformer`
 - **Execução**: AST interpretada por `Interpreter` com `Ctx`
+
+---
+
+## 📁 Exemplos
+
+Alguns exemplos de programas Mini-C estão disponíveis na pasta `exemplos/`. Exemplos:
+
+- `condicoes.c`: uso de `if`/`else` para comparar valores
+- `fatorial.c`: cálculo recursivo do fatorial de um número
+- `fibonacci.c`: cálculo recursivo do n-ésimo termo de Fibonacci
+- `printf.c`: impressão direta de um valor inteiro
+- `soma_loop.c`: soma de inteiros com estrutura `while`
+
+Para executar um exemplo:
+```bash
+python source.py exemplos/condicoes.c
+```
 
 ---
 
