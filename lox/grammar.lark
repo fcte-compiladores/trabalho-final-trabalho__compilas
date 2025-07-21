@@ -1,0 +1,95 @@
+?start     : program
+
+program    : declaration*
+
+?declaration: var_def 
+            | function
+            | stmt
+
+var_def : TYPE VAR ("=" expr)? ";"
+
+function   : TYPE VAR "(" fun_params ")" block
+
+fun_params   : [TYPE VAR ( "," TYPE VAR )*]
+
+?stmt       : expr ";"
+            | return_stmt
+            | print_cmd
+            | if_cmd
+            | for_cmd
+            | while_cmd
+            | break_cmd             -> break_cmd
+            | block
+
+return_stmt : "return" expr? ";"      -> return_cmd
+
+print_cmd   : "print" "(" expr ")" ";"
+
+if_cmd      : "if" "(" expr ")" stmt ["else" stmt]
+
+for_cmd     : "for" "(" for_args ")" stmt
+
+for_args    : ( var_def | expr? ";" ) expr? ";" expr?
+
+while_cmd   : "while" "(" expr ")" stmt
+
+block       : "{" declaration* "}"
+
+break_cmd   : "break" ";"
+
+?expr       : logic_or
+            | expr "=" expr             -> assign
+
+?logic_or   : logic_and
+            | logic_or "||" logic_and     -> or_
+
+?logic_and  : equality
+            | logic_and "&&" equality    -> and_
+
+?equality   : comparison
+            | comparison "==" comparison  -> eq
+            | comparison "!=" comparison  -> ne
+
+?comparison : sum
+            | sum ">" sum                 -> gt
+            | sum "<" sum                 -> lt
+            | sum ">=" sum                -> ge
+            | sum "<=" sum                -> le
+
+?sum        : term
+            | sum "+" term                -> add
+            | sum "-" term                -> sub
+
+?term       : unary
+            | term "*" unary              -> mul
+            | term "/" unary              -> div
+
+?unary      : MINUS unary                 -> unary
+            | NOT unary                   -> unary
+            | call
+            | atom
+
+?call       : atom "(" params ")"         -> call
+
+?atom       : NUMBER 
+            | BOOL
+            | VAR
+            | STRING
+            | VOID
+            | "(" expr ")"
+
+params      : [ expr ("," expr)* ]
+
+EQUAL       : "="
+MINUS       : "-"
+NOT         : "!"
+BOOL.2      : "true" | "false"
+DOT.2       : "."  
+VAR.1       : /[a-z_A-Z]\w*/
+TYPE.3      : "int" | "char"
+NUMBER      : /([1-9][0-9]*|0)(\.[0-9]+)?/ 
+STRING      : /"[^"]*"/
+VOID.3      : "void"
+COMMENT     : "//" /[^\n]*/
+
+%ignore /\s/ | COMMENT

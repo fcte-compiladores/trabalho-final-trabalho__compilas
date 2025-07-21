@@ -1,79 +1,115 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/Hppw7Zh2)
-# Trabalho Final
+# 🧾 Compilador para Mini-C
 
-## Escopo e organização
+## 👥 Integrantes
 
-O trabalho é de tema livre dentro do escopo da disciplina de compiladores e
-consiste no desenvolvimento de alguma aplicação na área da disciplina (um
-interpretador para uma linguagem simples, compilador, analisadores de código,
-etc.)
+- Nome: Arthur Guilherme Aquino Santos  
+  Matrícula: 231037656  
+  Turma: T02 (2025.1-46T45)
 
-O trabalho pode ser feito em grupos de até 4 pessoas.
+- Nome: João Igor Pereira da Costa  
+  Matrícula: 231027201  
+  Turma: T02 (2025.1-46T45)
 
-## Estrutura
+- Nome: Tiago Lemes Teixeira  
+  Matrícula: 231026581  
+  Turma: T02 (2025.1-46T45)
 
-Os trabalhos devem ser entregues na atividade própria no [github-classrrom](...).
-Cada repositório deve ter uma estrutura parecida com a delineada abaixo:
+- Nome: Yzabella Miranda Pimenta  
+  Matrícula: 231039187  
+  Turma: T02 (2025.1-46T45)
 
-* **README:** o arquivo README.md na base do repositório deve descrever os
-  detalhes da implementação do código. O README deve ter algumas seções 
-  obrigatórias:
-  - **Título**: nome do projeto
-  - **Integrantes**: lista com os nomes, matrículas e turma de cada integrante.
-  - **Introdução**: deve detalhar o que o projeto implementou, quais foram as
-    estratégias e algoritmos relevantes. Se o projeto implementa uma linguagem
-    não-comum ou um subconjunto de uma linguagem comum, deve conter alguns
-    exemplos de comandos nesta linguagem, descrendo a sua sintaxe e semântica,
-    quando necessário.
-  - **Instalação**: deve detalhar os passos para instalar as dependências e
-    rodar o código do projeto. Pode ser algo simples como *"Rode
-    `uv run lox hello.lox` para executar o interpretador."*, se a linguagem de
-    implementação permitir este tipo de facilidade.
+---
 
-    Você pode usar gerenciadores de pacotes específicos de linguagens populares
-    como uv, npm, cargo, etc, containers Docker/Podman, ou `.nix`.
-  - **Exemplos**: o projeto deve conter uma pasta "exemplos" com alguns arquivos
-    na linguagem de programação implementada. Deve conter exemplos com graus
-    variáveis de complexidade. Algo como: hello world, fibonacci, função
-    recursiva, alguma estrutura de dados e para finalizar um algoritmo um pouco
-    mais elaborado como ordenamento de listas, busca binária, etc.
-    
-    Note que isto é apenas um guia da ordem de dificuldade dos problemas.
-    Algumas linguagens sequer permitem a implementação de alguns dos exemplos
-    acima.
-  - **Referências**: descreva as referências que você utilizou para a
-    implementação da linguagem. Faça uma breve descrição do papel de cada
-    referência ou como ela foi usada no projeto. Caso você tenha usado algum 
-    código existente como referência, descreva as suas contribuições originais
-    para o projeto.
-  - **Estrutura do código**: faça uma descrição da estrutura geral do código
-    discutindo os módulos, classes, estruturas de dados ou funções principais. 
-    Explicite onde as etapas tradicionais de compilação (análise léxica, 
-    sintática, semântica, etc) são realizadas, quando relevante.
-  - **Bugs/Limitações/problemas conhecidos**: discuta as limitações do seu
-    projeto e problemas conhecidos e coisas que poderiam ser feitas para
-    melhorá-lo no futuro. Note: considere apenas melhorias incrementais e não
-    melhorias grandes como: "reimplementar tudo em Rust".
-* **Código:** O codigo fonte deve estar presente no repositório principal junto com
-  a declaração das suas dependências. Cada linguagem possui um mecanismo
-  específico para isso, mas seria algo como o arquivo pyproject.toml em Python
-  ou package.json no caso de Javascript.
+## 🧠 Introdução
 
-## Critérios
+Este projeto desenvolve um **interpretador** para uma linguagem baseada em um subconjunto simplificado da linguagem C, denominada **Mini-C**. O objetivo é permitir a execução de programas com estruturas típicas de C, como expressões aritméticas, controle de fluxo, definição de funções e impressão de valores.
 
-Cada trabalho começa com 100% e pode receber penalizações ou bônus de acordo com
-os critérios abaixo:
+### Funcionalidades implementadas:
 
-- Ausência do README: -50%
-- Instruções de instalação não funcionam: até -20%
-- Referências não atribuídas ou falta de referâncias: -10%
-- Código confuso ou mal organizado: até -15%
-- Falta de clareza em apresentar as técnicas e etapas de compilação: -15%
-- Bugs e limitações sérias na implementação: até -25%
-- Escopo reduzido, ou implementação insuficiente: até 25%
-- Uso de código não atribuído/plágio: até -100%
-- Repositório bem estruturado e organizado: até 10%
-- Linguagem com conceitos originais/interessantes: até +15%
-- Testes unitários: até +15%, dependendo da cobertura
+- Declaração e atribuição de variáveis com tipos (`int`, `char`, `bool`)
+- Expressões aritméticas e booleanas
+- Comandos de controle: `if`, `else`, `while`, `break`, `return`
+- Funções com parâmetros e retorno
+- Impressão de valores (`printf`)
+- Escopos com blocos `{}` e ambiente de execução aninhado
 
-Após aplicar todos os bônus, a nota é truncada no intervalo 0-100%. 
+### Estratégias utilizadas:
+
+- **Análise léxica e sintática** com Lark, usando uma gramática LALR (`grammar.lark`)
+- **Transformação da árvore sintática (parse tree) em AST**, com a classe `ASTTransformer`
+- **Execução da AST** com um interpretador baseado em visitas (`evaluator.py`)
+- Contexto de execução controlado por escopos (`ctxMinic.py`)
+
+---
+
+## ⚙️ Instalação
+
+1. Clone o repositório:
+```bash
+git clone https://github.com/fcte-compiladores/trabalho-final-trabalho__compilas.git
+cd seu-repositorio
+```
+
+2. (Opcional) Instale o gerenciador de pacotes uv, caso ainda não tenha:
+```bash
+uv pip install uv
+```
+
+3. Instale as dependências:
+```bash
+uv pip install -r requirements.txt
+```
+
+---
+
+
+## 📚 Referências
+
+As principais referências utilizadas para a realização do trabalho foram: 
+
+- [Repositório da disciplina Compiladores 1 (FCTE, 2025/1)](https://github.com/fcte-compiladores/2025-1)  
+  Serviu como base inicial para a estrutura do projeto e forneceu exemplos de interpretadores em Python, incluindo o Lox, usados como inspiração para a arquitetura geral do compilador.
+
+- [Crafting Interpreters, Robert Nystrom, 2015–2021](https://craftinginterpreters.com/)  
+  Livro fundamental para o desenvolvimento do interpretador, guiando a construção de analisadores léxicos e sintáticos, ASTs e o padrão de visitantes, adaptados para a linguagem Mini-C.
+
+- [Documentação oficial da linguagem C (ISO C)](https://en.cppreference.com/w/c)  
+  Utilizada como base para definir a sintaxe, tipos primitivos e semântica da linguagem Mini-C, garantindo maior fidelidade à linguagem C original.
+
+---
+
+## 🧩 Estrutura do Código
+
+- `ast_c.py`: definição da AST (expressões, comandos, funções, blocos, etc.)
+- `ctxMinic.py`: implementação do contexto de execução (escopos, variáveis, funções)
+- `evaluator.py`: interpretador que executa a AST
+- `grammar.lark`: gramática LALR da linguagem Mini-C
+- `source.py`: ponto de entrada, faz parsing e chama o interpretador
+- `errors.py`: erros semânticos personalizados
+- `run.py`: utilitário auxiliar com funções alternativas de execução
+
+Etapas da compilação:
+
+- **Léxica/Sintática**: `Lark` com gramática definida
+- **AST**: transformação com `ASTTransformer`
+- **Execução**: AST interpretada por `Interpreter` com `Ctx`
+
+---
+
+## 🐞 Bugs / Limitações
+
+- Não há suporte a vetores ou structs
+- Tipagem é estática, mas limitada (sem coerção automática entre tipos)
+- Ainda não há suporte a `for`
+- Não há suporte a escopos globais separados de funções
+- Erros de execução ainda são genéricos em alguns pontos
+
+### Melhorias possíveis
+
+- Implementar suporte a arrays
+- Adicionar operadores lógicos completos (`!=`, `<=`, etc.)
+- Suporte a `for`, `continue`, `do while`
+- Melhoria nas mensagens de erro e validações
+- Suporte a tipos compostos (ex: structs)
+
+---
